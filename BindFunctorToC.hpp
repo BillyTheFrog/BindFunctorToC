@@ -7,7 +7,7 @@
 #ifndef BINDFUNCTORTOC_HPP_
 #define BINDFUNCTORTOC_HPP_
 
-#if ((defined(__i386__) || defined(__x86_64__) || defined(__arm__)) && (defined(__linux__) || defined(__linux) || defined(linux) || defined(__unix__) || defined(__unix))) || (defined(WIN32) || defined(_WIN32) || defined(__WIN32__))
+#if ((defined(__x86_64__) || defined(__i386__) || defined(__arm__)) && (defined(__linux__) || defined(__linux) || defined(linux) || defined(__unix__) || defined(__unix))) || (defined(WIN32) || defined(_WIN32) || defined(__WIN32__))
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 #if defined(_DEBUG) || defined(DEBUG)
@@ -103,11 +103,11 @@ template<typename R, typename T, typename ...A> __BndFcntrTC__<R(T::*)(A...)>::_
     (void const *const)(_rwTmpltSz + _pgSz);
     _sgmnt = VirtualAlloc(NULL, _sgmntSz, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
     if (!_sgmnt)
-        throw std::runtime_error{std::string{"VirtualAlloc error :: "} + std::to_string(GetLastError())};
+        throw std::runtime_error{std::string{"BindFunctorToC :: VirtualAlloc error :: "} + std::to_string(GetLastError())};
 #else
     _sgmnt = mmap(nullptr, _sgmntSz, PROT_EXEC | PROT_WRITE | PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
     if (MAP_FAILED == _sgmnt)
-        throw std::runtime_error{std::string{"Mmap error :: "} + strerror(errno)};
+        throw std::runtime_error{std::string{"BindFunctorToC :: Mmap error :: "} + strerror(errno)};
 #endif
     void const *const sgmnt{(void const *)__DCL__((&__RwTmplt__<R, T, A...>))};
     std::memcpy(_sgmnt, sgmnt, _rwTmpltSz);
@@ -115,10 +115,10 @@ template<typename R, typename T, typename ...A> __BndFcntrTC__<R(T::*)(A...)>::_
 #ifdef __win32__
     unsigned long dscrd;
     if (!VirtualProtect(_sgmnt, _sgmntSz, PAGE_EXECUTE_READ, &dscrd))
-        throw std::runtime_error{std::string{"VirtualProtect error :: "} + std::to_string(GetLastError())};
+        throw std::runtime_error{std::string{"BindFunctorToC :: VirtualProtect error :: "} + std::to_string(GetLastError())};
 #else
     if (mprotect(_sgmnt, _sgmntSz, PROT_EXEC | PROT_READ))
-        throw std::runtime_error{std::string{"Mprotect error :: "} + strerror(errno)};
+        throw std::runtime_error{std::string{"BindFunctorToC :: Mprotect error :: "} + strerror(errno)};
     __builtin___clear_cache(_sgmnt, (uint8_t*)_sgmnt + _rwTmpltSz);
 #endif
 }
@@ -164,7 +164,7 @@ template<typename R, typename T, typename ...A> void __BndFcntrTC__<R(T::*)(A...
                 i % 4 ? ((i[ffst + k] >>= 4) <<= 4) |= i % 2 ? uint8_t{(uint8_t)((i / 4 ? 3 : 1)[(uint8_t *)&tht] << 4)} >> 4 : (i / 4 ? 3 : 1)[(uint8_t *)&tht] >> 4 : i[ffst + k] = (i / 2)[(uint8_t *)&tht];
     }
     if (!ffst)
-        throw std::runtime_error{"Failed to resolve flag offset"};
+        throw std::runtime_error{"BindFunctorToC :: Failed to resolve flag offset"};
 }
 
 template<typename R, typename T, typename ...A> template<typename O> typename std::enable_if<std::is_same<O, void>::value, void>::type __BndFcntrTC__<R(T::*)(A...)>::__MdmMppr__(__BndFcntrTC__<R(T::*)(A...)> &tht, typename __TTRf__<A>::_R... __flds__) noexcept {
