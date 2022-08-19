@@ -16,7 +16,7 @@ This dummy code will then be inspected and modified to have it's matching instan
 
 This process is stable and works on the following platforms and environments:
 - Unis-like systems (x86_64, i386, arm)
-- Windows (x32, x64)
+- Windows (x64, x32)
 - C++ 11, 14, 17, +
 
 The functor's signature will be automatically deduced and resolved, this process supports 0 to n arguments of any type, as well as void or any return type.
