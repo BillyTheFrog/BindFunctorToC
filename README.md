@@ -1,3 +1,5 @@
+DEPRECATED ; NEW SOFTWARE IS MAINTAINED AT https://gitlab.com/Ezarkei/BindToC
+
 # BindFunctorToC
 
 Allows binding of a C++ object instance's functor (operator()) to a C-style function pointer.
