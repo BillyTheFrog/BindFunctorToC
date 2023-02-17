@@ -1,4 +1,4 @@
-DEPRECATED ; NEW SOFTWARE IS MAINTAINED AT https://gitlab.com/Ezarkei/BindToC
+DEPRECATED ; NEW SOFTWARE IS MAINTAINED AT https://github.com/BillyTheFrog/BindToC
 
 # BindFunctorToC
 
